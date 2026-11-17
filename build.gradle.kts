@@ -6,7 +6,7 @@ sourceSets.main {
     java.setSrcDirs(listOf("src"))
 }
 
-val mindustryVersion = "v160"
+val mindustryVersion = "v160.7"
 val isWindows = System.getProperty("os.name").lowercase().contains("windows")
 val sdkRoot: String? = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
 val projectName = project.name
