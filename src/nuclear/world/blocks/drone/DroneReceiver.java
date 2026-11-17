@@ -8,6 +8,7 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.storage.*;
+import nuclear.*;
 import nuclear.drone.*;
 
 /**
@@ -24,6 +25,7 @@ public class DroneReceiver extends StorageBlock{
         saveConfig = true;
         clearOnDoubleTap = true;
         buildType = ReceiverBuild::new;
+        NuclearUtil.sync(this);
 
         config(Item.class, (ReceiverBuild b, Item i) -> b.filter = i);
         configClear((ReceiverBuild b) -> b.filter = null);

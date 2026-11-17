@@ -1,6 +1,8 @@
 package nuclear.world.blocks.production;
 
 import arc.math.*;
+import nuclear.*;
+import mindustry.*;
 import mindustry.type.*;
 import mindustry.world.blocks.production.*;
 
@@ -15,6 +17,7 @@ public class EnrichmentCentrifuge extends GenericCrafter{
     public EnrichmentCentrifuge(String name){
         super(name);
         buildType = EnrichmentCentrifugeBuild::new;
+        NuclearUtil.sync(this);
     }
 
     public class EnrichmentCentrifugeBuild extends GenericCrafterBuild{
@@ -28,8 +31,11 @@ public class EnrichmentCentrifuge extends GenericCrafter{
         public void craft(){
             consume();
 
-            Item result = Mathf.chance(enrichChance) ? enrichedItem : outputItem.item;
-            offload(result);
+            //the result is random, so only the server decides it (clients get the items through block sync)
+            if(!Vars.net.client()){
+                Item result = Mathf.chance(enrichChance) ? enrichedItem : outputItem.item;
+                offload(result);
+            }
 
             craftEffect.at(x, y);
             progress %= 1f;

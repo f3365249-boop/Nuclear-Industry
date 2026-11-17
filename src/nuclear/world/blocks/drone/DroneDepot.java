@@ -3,6 +3,7 @@ package nuclear.world.blocks.drone;
 import arc.*;
 import mindustry.*;
 import mindustry.world.blocks.storage.*;
+import nuclear.*;
 import nuclear.drone.*;
 
 /** 1x1 storage for drones: holds {@code itemCapacity} (50) of every item type. Worker drones take items from here. */
@@ -13,6 +14,7 @@ public class DroneDepot extends StorageBlock{
         coreMerge = false;
         update = true;
         buildType = DepotBuild::new;
+        NuclearUtil.sync(this);
     }
 
     public class DepotBuild extends StorageBuild{

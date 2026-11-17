@@ -14,6 +14,7 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
+import nuclear.*;
 import nuclear.content.*;
 import nuclear.radiation.*;
 
@@ -29,7 +30,7 @@ public class UraniumReactor extends Block{
     public Liquid outputLiquid;
 
     /** Temperatures, in degrees Celsius. */
-    public float maxTemp = 1250f, dangerTemp = 1000f, ambientTemp = 20f;
+    public float maxTemp = 1250f, dangerTemp = 800f, ambientTemp = 20f;
     /** Seconds one fuel item burns. Does not depend on how much fuel is inside. */
     public float burnSeconds = 120f;
     /** Heating in degrees per second with a completely full fuel load. Scales linearly with the fuel inside. */
@@ -37,11 +38,11 @@ public class UraniumReactor extends Block{
     /** Water boiled / steam produced per second at max temperature (scales linearly with temperature). */
     public float steamPerSecond = 60f;
     /** Temperature at which a completely full, fully watered reactor settles. Less fuel settles lower. */
-    public float equilibriumTemp = 800f;
+    public float equilibriumTemp = 1100f;
     /** Fraction of temperature lost to the air per second (slow passive cooling). */
     public float passiveCooling = 0.001f;
     /** Seconds without water above danger temperature before the reactor blows. */
-    public float meltdownSeconds = 5f;
+    public float meltdownSeconds = 3f;
 
     public float explosionRadiusTiles = 27f;
     public float explosionDamage = 10000f; //about 2 thorium reactors
@@ -64,9 +65,7 @@ public class UraniumReactor extends Block{
         buildType = UraniumReactorBuild::new;
 
         //make clients receive temperature etc. if this game version supports block syncing
-        try{
-            Block.class.getField("sync").setBoolean(this, true);
-        }catch(Throwable ignored){}
+        NuclearUtil.sync(this);
     }
 
     @Override
@@ -168,7 +167,7 @@ public class UraniumReactor extends Block{
             temp = Mathf.clamp(temp, ambientTemp, maxTemp);
 
             //meltdown countdown
-            if(temp > dangerTemp && satisfaction < 0.35f){
+            if(temp >= dangerTemp && satisfaction < 0.35f){
                 meltdown += dt;
                 if(meltdown >= meltdownSeconds && !Vars.net.client()){
                     kill();

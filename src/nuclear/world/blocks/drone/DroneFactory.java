@@ -16,6 +16,7 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
+import nuclear.*;
 import nuclear.drone.*;
 
 /** Builds the selected drone type from items put into it. */
@@ -45,6 +46,7 @@ public class DroneFactory extends Block{
         configurable = true;
         clearOnDoubleTap = true;
         buildType = DroneFactoryBuild::new;
+        NuclearUtil.sync(this);
 
         config(UnitType.class, (DroneFactoryBuild b, UnitType u) -> {
             if(b.plan != u){
@@ -125,10 +127,11 @@ public class DroneFactory extends Block{
             progress += edelta();
             if(progress >= p.time){
                 progress = 0f;
-                for(ItemStack s : p.requirements) items.remove(s.item, s.amount);
 
                 Fx.spawn.at(x, y);
+                //items and the unit are handled by the server only, clients would desync
                 if(!Vars.net.client()){
+                    for(ItemStack s : p.requirements) items.remove(s.item, s.amount);
                     Unit u = p.unit.create(team);
                     u.set(x + Mathf.range(6f), y + Mathf.range(6f));
                     u.rotation = 90f;
