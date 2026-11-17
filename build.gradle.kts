@@ -12,7 +12,6 @@ val sdkRoot: String? = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_S
 val projectName = project.name
 
 repositories {
-    mavenCentral()
 
     ivy {
         url = uri("https://github.com/")
