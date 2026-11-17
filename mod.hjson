@@ -1,0 +1,8 @@
+displayName: "Nuclear Industry"
+name: "nuclear-industry"
+author: "EliteMods"
+main: "nuclear.NuclearMod"
+description: "ядерка уран пау пау чики ряю"
+version: 1.2.0
+minGameVersion: 153
+java: true
